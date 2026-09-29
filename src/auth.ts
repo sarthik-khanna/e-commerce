@@ -6,6 +6,7 @@ import bcrypt from "bcryptjs";
 import type { Provider } from "next-auth/providers";
 import { authConfig } from "@/auth.config";
 import { db } from "@/lib/db";
+import { readEnv } from "@/lib/env";
 import { loginSchema } from "@/lib/validations";
 
 // How often the JWT re-checks the database for role changes or deactivation.
@@ -29,9 +30,13 @@ const providers: Provider[] = [
   }),
 ];
 
-if (process.env.AUTH_GOOGLE_ID && process.env.AUTH_GOOGLE_SECRET) {
+const googleId = readEnv("AUTH_GOOGLE_ID");
+const googleSecret = readEnv("AUTH_GOOGLE_SECRET");
+if (googleId && googleSecret) {
   providers.push(
     Google({
+      clientId: googleId,
+      clientSecret: googleSecret,
       // Google verifies email ownership, so linking to an existing
       // email/password account with the same address is safe here.
       allowDangerousEmailAccountLinking: true,

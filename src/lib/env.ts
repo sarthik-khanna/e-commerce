@@ -3,20 +3,30 @@ import "server-only";
 // Feature flags derived from environment variables. Every third-party
 // integration degrades gracefully so the app runs locally with only a database.
 
+/**
+ * Reads an environment variable, trimming whitespace and one pair of wrapping
+ * quotes. Values copied from `.env` into a hosting dashboard (e.g. Vercel) often
+ * keep their quotes — `"re_123"` — which would otherwise make keys invalid.
+ */
+export function readEnv(name: string): string | undefined {
+  const raw = process.env[name]?.trim();
+  if (!raw) return undefined;
+  const unquoted = raw.replace(/^(["'])([\s\S]*)\1$/, "$2").trim();
+  return unquoted || undefined;
+}
+
 export const env = {
-  appUrl: process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000",
+  appUrl: readEnv("NEXT_PUBLIC_APP_URL") ?? "http://localhost:3000",
   isProduction: process.env.NODE_ENV === "production",
 };
 
 export const features = {
-  google: Boolean(process.env.AUTH_GOOGLE_ID && process.env.AUTH_GOOGLE_SECRET),
-  razorpay: Boolean(process.env.RAZORPAY_KEY_ID && process.env.RAZORPAY_KEY_SECRET),
+  google: Boolean(readEnv("AUTH_GOOGLE_ID") && readEnv("AUTH_GOOGLE_SECRET")),
+  razorpay: Boolean(readEnv("RAZORPAY_KEY_ID") && readEnv("RAZORPAY_KEY_SECRET")),
   cloudinary: Boolean(
-    process.env.CLOUDINARY_CLOUD_NAME &&
-      process.env.CLOUDINARY_API_KEY &&
-      process.env.CLOUDINARY_API_SECRET,
+    readEnv("CLOUDINARY_CLOUD_NAME") && readEnv("CLOUDINARY_API_KEY") && readEnv("CLOUDINARY_API_SECRET"),
   ),
-  email: Boolean(process.env.RESEND_API_KEY),
+  email: Boolean(readEnv("RESEND_API_KEY")),
 };
 
 /** Simulated payments are only allowed outside production when Razorpay keys are absent. */

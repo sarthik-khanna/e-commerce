@@ -6,8 +6,8 @@ import type { Role } from "@/generated/prisma/enums";
 
 const STAFF: Role[] = ["ADMIN", "MANAGER"];
 const AUTH_PAGES = ["/login", "/register", "/forgot-password", "/reset-password"];
-// Admin-only sections (mirrors users:manage / audit:view in lib/rbac.ts).
-const ADMIN_ONLY = ["/admin/users", "/admin/audit-logs"];
+// Admin-only sections (mirrors users:manage / audit:view / settings:manage in lib/rbac.ts).
+const ADMIN_ONLY = ["/admin/users", "/admin/audit-logs", "/admin/integrations"];
 
 export const authConfig = {
   pages: {

@@ -2,7 +2,7 @@
 
 import { auth } from "@/auth";
 import { db } from "@/lib/db";
-import { canSimulatePayments, features } from "@/lib/env";
+import { canSimulatePayments, features, readEnv } from "@/lib/env";
 import { CheckoutError, createPendingOrder, markOrderPaid } from "@/lib/orders";
 import { getRazorpay } from "@/lib/razorpay";
 import { checkoutSchema, fieldErrorsOf } from "@/lib/validations";
@@ -49,7 +49,7 @@ export async function createCheckoutAction(input: unknown): Promise<CheckoutResu
       orderId: order.id,
       mode: "razorpay",
       razorpay: {
-        keyId: process.env.RAZORPAY_KEY_ID!,
+        keyId: readEnv("RAZORPAY_KEY_ID")!,
         orderId: rzpOrder.id,
         amount: order.total,
         currency: order.currency,

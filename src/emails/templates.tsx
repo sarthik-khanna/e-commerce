@@ -16,6 +16,17 @@ export function WelcomeEmail({ name, appUrl }: { name: string; appUrl: string })
   );
 }
 
+export function TestEmail({ appUrl }: { appUrl: string }) {
+  return (
+    <EmailLayout preview="Your email setup works" heading="Email delivery is working">
+      <Text style={textStyle}>
+        This test was sent from the Integrations page of {appUrl}. Welcome, password-reset and order emails will be
+        delivered the same way.
+      </Text>
+    </EmailLayout>
+  );
+}
+
 export function PasswordResetEmail({ resetUrl }: { resetUrl: string }) {
   return (
     <EmailLayout preview="Reset your password" heading="Reset your password">

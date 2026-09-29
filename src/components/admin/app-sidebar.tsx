@@ -8,6 +8,7 @@ import {
   FolderTreeIcon,
   LayoutDashboardIcon,
   PackageIcon,
+  PlugZapIcon,
   ScrollTextIcon,
   ShieldCheckIcon,
   ShoppingCartIcon,
@@ -54,6 +55,7 @@ const NAV: { label: string; items: NavItem[] }[] = [
     items: [
       { href: "/admin/users", label: "Users & roles", icon: ShieldCheckIcon, permission: "users:manage" },
       { href: "/admin/audit-logs", label: "Audit logs", icon: ScrollTextIcon, permission: "audit:view" },
+      { href: "/admin/integrations", label: "Integrations", icon: PlugZapIcon, permission: "settings:manage" },
     ],
   },
 ];
