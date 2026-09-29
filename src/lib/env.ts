@@ -26,7 +26,10 @@ export const features = {
   cloudinary: Boolean(
     readEnv("CLOUDINARY_CLOUD_NAME") && readEnv("CLOUDINARY_API_KEY") && readEnv("CLOUDINARY_API_SECRET"),
   ),
-  email: Boolean(readEnv("RESEND_API_KEY")),
+  // Gmail/SMTP (any recipient, no domain needed) or Resend.
+  email: Boolean(
+    (readEnv("SMTP_HOST") && readEnv("SMTP_USER") && readEnv("SMTP_PASS")) || readEnv("RESEND_API_KEY"),
+  ),
 };
 
 /** Simulated payments are only allowed outside production when Razorpay keys are absent. */

@@ -3,7 +3,7 @@
 import { z } from "zod";
 import { audit } from "@/lib/audit";
 import { AuthorizationError, assertPermission } from "@/lib/auth-guard";
-import { sendEmail } from "@/lib/email";
+import { emailConfig, sendEmail } from "@/lib/email";
 import { env } from "@/lib/env";
 import { TestEmail } from "@/emails/templates";
 
@@ -36,7 +36,8 @@ export async function sendTestEmailAction(_: TestEmailState, formData: FormData)
     metadata: { ok: result.ok },
   });
 
+  const provider = emailConfig.provider === "smtp" ? "The SMTP server" : "Resend";
   return result.ok
-    ? { ok: true, message: `Resend accepted the email (id ${result.id}). Check the inbox and spam folder of ${parsed.data.to}.` }
-    : { ok: false, message: `Resend refused the email: ${result.error}`, hint: result.hint };
+    ? { ok: true, message: `${provider} accepted the email. Check the inbox and spam folder of ${parsed.data.to}.` }
+    : { ok: false, message: `${provider} refused the email: ${result.error}`, hint: result.hint };
 }

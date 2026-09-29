@@ -48,16 +48,33 @@ function siteRow(): Row {
 function emailRow(): Row {
   if (!emailConfig.configured) {
     return {
-      name: "Email (Resend)",
+      name: "Email",
       status: env.isProduction ? "warn" : "off",
-      summary: "RESEND_API_KEY is not set",
-      details: ["No emails are sent. Add RESEND_API_KEY, then redeploy — new variables only apply to new deployments."],
+      summary: "No email provider configured",
+      details: [
+        "No emails are sent. Set SMTP_HOST, SMTP_USER and SMTP_PASS (Gmail + App Password, free) or RESEND_API_KEY, then redeploy — new variables only apply to new deployments.",
+      ],
+    };
+  }
+  if (emailConfig.provider === "smtp") {
+    return {
+      name: "Email (SMTP)",
+      status: "ok",
+      summary: `Sending through ${emailConfig.smtpHost} — use the test below to confirm delivery`,
+      details: [
+        `Sender: ${emailConfig.from}`,
+        emailConfig.smtpHost?.endsWith("gmail.com")
+          ? "Gmail delivers to any address, up to about 500 emails a day."
+          : "Delivers to any address the SMTP server accepts.",
+      ],
     };
   }
   const details = [`Sender: ${emailConfig.from}`];
   if (!emailConfig.keyLooksValid) details.push("RESEND_API_KEY doesn't start with re_ — it may be the wrong value.");
   if (emailConfig.from.includes("@resend.dev")) {
-    details.push("Test mode: Resend only delivers to the email address you signed up to Resend with. Verify a domain to email everyone.");
+    details.push(
+      "Test mode: Resend only delivers to the email address you signed up to Resend with. Verify a domain, or switch to Gmail SMTP (free), to email everyone.",
+    );
   }
   return {
     name: "Email (Resend)",
@@ -149,7 +166,7 @@ export default async function IntegrationsPage() {
         <CardHeader>
           <CardTitle>Send a test email</CardTitle>
           <CardDescription>
-            Sends a real email through Resend and shows its exact answer, so you can see why an email isn&apos;t
+            Sends a real email through your email provider and shows its exact answer, so you can see why an email isn&apos;t
             arriving.
           </CardDescription>
         </CardHeader>

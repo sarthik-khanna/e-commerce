@@ -75,16 +75,30 @@ Open http://localhost:3000 and sign in as `admin@nexus.test` / `Password123`. Ch
    ```
 3. Admin → Products → Add product → **Upload** now sends images straight to Cloudinary.
 
-## 6. Resend (emails)
+## 6. Email (Gmail SMTP or Resend)
+
+Emails sent: welcome, password reset, order confirmation, shipped / delivered / cancelled updates. Pick one provider; if both are configured, Gmail/SMTP is used. **Admin → Integrations** shows which one is active and has a **Send test email** button that displays the provider's exact answer.
+
+### Option A — Gmail SMTP (free, any recipient, no domain needed)
+
+1. On the Google account you'll send from, turn on **2-Step Verification** (Google Account → Security).
+2. Open https://myaccount.google.com/apppasswords, create an App Password named "Nexus Commerce", and copy the 16-character code.
+3. ```env
+   SMTP_HOST="smtp.gmail.com"
+   SMTP_PORT="465"
+   SMTP_USER="you@gmail.com"
+   SMTP_PASS="abcd efgh ijkl mnop"   # the App Password — not your normal password
+   ```
+   Emails are sent from your Gmail address (display name taken from `EMAIL_FROM`). Gmail allows about 500 emails per day.
+
+### Option B — Resend
 
 1. Sign up at https://resend.com → **API Keys → Create**.
    ```env
    RESEND_API_KEY="re_…"
    EMAIL_FROM="Nexus Commerce <onboarding@resend.dev>"
    ```
-2. Without a verified domain, Resend only delivers to **your own account email** — register a customer with that address to test. To email anyone, verify a domain under **Domains** and change `EMAIL_FROM` to `orders@yourdomain.com`.
-
-Emails sent: welcome, password reset, order confirmation, shipped / delivered / cancelled updates.
+2. Without a verified domain, Resend only delivers to **your own account email** — register a customer with that address to test. To email anyone, verify a domain you own under **Domains** and change `EMAIL_FROM` to `orders@yourdomain.com` (or use Option A).
 
 ## 7. Google sign-in (optional)
 
