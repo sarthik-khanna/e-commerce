@@ -15,6 +15,32 @@ A full-stack, production-ready e-commerce platform built as a **single Next.js a
 
 ---
 
+## Screenshots
+
+*Captured from the seeded demo data (`npm run db:seed`).*
+
+### Storefront
+
+| Home | Catalog |
+|---|---|
+| ![Home page with hero, categories and featured products](docs/screenshots/01-home.png) | ![Product catalog with category filters and real product photos](docs/screenshots/02-catalog.png) |
+
+![Product detail page with photo gallery, price, stock and add to cart](docs/screenshots/03-product.png)
+
+### Admin console
+
+| Dashboard | Products |
+|---|---|
+| ![Analytics dashboard with revenue chart, orders by status, sales by category and top products](docs/screenshots/04-admin-dashboard.png) | ![Admin product list with search, filters and stock](docs/screenshots/05-admin-products.png) |
+
+![Sales reports with revenue breakdown, top products and CSV export](docs/screenshots/06-admin-reports.png)
+
+### Architecture
+
+![How the app works: browser, proxy, pages, actions, payments, database, email and image storage](docs/screenshots/07-architecture.png)
+
+---
+
 ## Features
 
 **Storefront** — home page with featured products and categories · catalog with search, category filter, sorting and pagination · product detail with gallery and related products · persistent cart · checkout with address validation · Razorpay payment · order history and order tracking.
