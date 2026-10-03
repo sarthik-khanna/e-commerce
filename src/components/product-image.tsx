@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 
 // Hosts configured in next.config.ts images.remotePatterns get optimized by
 // next/image (resized, WebP/AVIF, lazy-loaded). Anything else is served as-is.
-const OPTIMIZED_HOSTS = ["res.cloudinary.com", "placehold.co", "images.unsplash.com"];
+const OPTIMIZED_HOSTS = ["res.cloudinary.com", "placehold.co", "images.unsplash.com", "images.pexels.com"];
 
 function isOptimizable(src: string) {
   try {

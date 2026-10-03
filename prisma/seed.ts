@@ -12,6 +12,7 @@ import bcrypt from "bcryptjs";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient, type Prisma, type Product, type User } from "../src/generated/prisma/client";
 import type { OrderStatus, PaymentStatus } from "../src/generated/prisma/enums";
+import { imagesFor } from "./product-images";
 
 const db = new PrismaClient({
   adapter: new PrismaPg({
@@ -149,6 +150,9 @@ async function main() {
       data: { name: cat.name, slug: slugify(cat.name), description: cat.description },
     });
     for (const [name, price, mrp] of PRODUCTS[cat.name]) {
+      const sku = `SKU-${skuCounter++}`;
+      // Real photos from prisma/product-images.ts; a coloured placeholder only if a product has none.
+      const photos = imagesFor(sku, name);
       const text = encodeURIComponent(name.replace(/\s*\(.*\)/, ""));
       products.push(
         await db.product.create({
@@ -156,17 +160,16 @@ async function main() {
             name,
             slug: slugify(name),
             description: `${name} — thoughtfully designed and built to last.\n\n• Premium materials\n• 1-year warranty\n• Free returns within 7 days`,
-            sku: `SKU-${skuCounter++}`,
+            sku,
             price: price * 100,
             compareAtPrice: mrp ? mrp * 100 : null,
             stock: between(0, 10) === 0 ? between(0, 6) : between(15, 200),
             isFeatured: rand() < 0.35,
             categoryId: category.id,
             images: {
-              create: [
-                { url: `https://placehold.co/800x800/${cat.color}/ffffff/png?text=${text}`, alt: name, position: 0 },
-                { url: `https://placehold.co/800x800/e4e4e7/18181b/png?text=${text}`, alt: `${name} alternate view`, position: 1 },
-              ],
+              create: photos.length
+                ? photos
+                : [{ url: `https://placehold.co/800x800/${cat.color}/ffffff/png?text=${text}`, alt: name, position: 0 }],
             },
           },
         }),

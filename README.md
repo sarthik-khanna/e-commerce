@@ -75,6 +75,7 @@ Only `DATABASE_URL` and `AUTH_SECRET` are required. Everything else degrades gra
 | `npm run db:migrate` | Create & apply a migration in development |
 | `npm run db:deploy` | Apply migrations in production |
 | `npm run db:seed` · `npm run db:reset` | Seed demo data · reset DB and reseed |
+| `npm run db:images` | Give the demo products real photos **without** resetting data (`-- --dry-run` previews) |
 | `npm run db:studio` | Browse data in Prisma Studio |
 
 ---
@@ -122,3 +123,7 @@ enterprise-ecommerce/
 - [API reference](docs/API.md)
 - [Workflows (checkout, payments, orders, uploads, auth)](docs/WORKFLOWS.md)
 - [Deployment](docs/DEPLOYMENT.md)
+
+## Photo credits
+
+The demo product photos come from [Unsplash](https://unsplash.com/license) and [Pexels](https://www.pexels.com/license/), both free to use in websites and apps without attribution. They are listed in [`prisma/product-images.ts`](prisma/product-images.ts); replace them from **Admin → Products** with your own images at any time.
